@@ -1,0 +1,202 @@
+---
+import "../styles/global.css";
+---
+<body class="bg-gray-100 p-8">
+
+  <div class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-lg">
+    <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">Pedido de Uniformes</h1>
+
+    <form id="orderForm" class="space-y-6">
+      <div>
+        <label for="clientName" class="block text-lg font-medium text-gray-700">Nome Completo</label>
+        <input type="text" id="clientName" name="clientName" class="w-full p-3 border border-gray-300 rounded-lg" required />
+      </div>
+
+      <div>
+        <label for="clientEmail" class="block text-lg font-medium text-gray-700">Email</label>
+        <input type="email" id="clientEmail" name="clientEmail" class="w-full p-3 border border-gray-300 rounded-lg" required />
+      </div>
+
+      <div id="uniformsContainer">
+        <!-- Uniformes serão renderizados aqui -->
+      </div>
+
+      <div class="mt-4 text-center">
+        <button type="button" id="addUniform" class="bg-gray-600 text-white px-6 py-3 rounded-lg shadow-md">Adicionar Outra Camisa</button>
+      </div>
+
+      <div class="mt-8 text-center">
+       <button
+  		type="submit"
+  			class="bg-blue-600 text-white px-6 py-3 rounded-lg transition-all duration-200 transform hover:bg-blue-700 hover:scale-105 active:scale-95 shadow focus:outline-none focus:ring-2 focus:ring-blue-400"
+				>
+ 					 Enviar Pedido
+				</button>
+      </div>
+    </form>
+
+    <div id="statusMessage" class="mt-6 hidden text-center text-lg"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById('orderForm');
+    const statusMessage = document.getElementById('statusMessage');
+    const addUniformBtn = document.getElementById('addUniform');
+    const uniformsContainer = document.getElementById('uniformsContainer');
+
+    // Função para salvar dados no localStorage
+    function saveFormData() {
+      const formData = new FormData(form);
+      const data = {};
+      formData.forEach((value, key) => {
+        if (key.startsWith('uniform')) {
+          if (!data[key]) data[key] = [];
+          data[key].push(value);
+        } else {
+          data[key] = value;
+        }
+      });
+      localStorage.setItem('uniformOrder', JSON.stringify(data));
+    }
+
+    // Função para restaurar dados do localStorage
+    function restoreFormData() {
+      const saved = localStorage.getItem('uniformOrder');
+      if (!saved) {
+        // Se não houver dados, renderiza um uniforme vazio
+        renderUniforms([{ name: '', number: '', size: 'P' }]);
+        return;
+      }
+      const data = JSON.parse(saved);
+
+      // Restaurar campos principais
+      if (data.clientName) form.clientName.value = data.clientName;
+      if (data.clientEmail) form.clientEmail.value = data.clientEmail;
+
+      // Restaurar uniformes
+      if (data.uniformName && Array.isArray(data.uniformName)) {
+        const uniforms = [];
+        for (let i = 0; i < data.uniformName.length; i++) {
+          uniforms.push({
+            name: data.uniformName[i] || '',
+            number: data.uniformNumber ? data.uniformNumber[i] : '',
+            size: data.uniformSize ? data.uniformSize[i] : 'P'
+          });
+        }
+        renderUniforms(uniforms);
+      } else {
+        renderUniforms([{ name: '', number: '', size: 'P' }]);
+      }
+    }
+
+    // Função para renderizar os uniformes no formulário
+    function renderUniforms(uniforms) {
+      uniformsContainer.innerHTML = '';
+      uniforms.forEach((uniform, idx) => {
+        const uniformItem = document.createElement('div');
+        uniformItem.classList.add('uniform-item');
+        uniformItem.innerHTML = `
+          <div class="flex space-x-4">
+            <div>
+              <label class="block text-lg font-medium text-gray-700">Nome da Camisa</label>
+              <input type="text" name="uniformName[]" class="w-full p-3 border border-gray-300 rounded-lg" required value="${uniform.name}" />
+            </div>
+            <div>
+              <label class="block text-lg font-medium text-gray-700">Número</label>
+              <input type="number" name="uniformNumber[]" class="w-full p-3 border border-gray-300 rounded-lg" required value="${uniform.number}" />
+            </div>
+            <div>
+              <label class="block text-lg font-medium text-gray-700">Tamanho</label>
+              <select name="uniformSize[]" class="w-full p-3 border border-gray-300 rounded-lg" required>
+                <option value="P" ${uniform.size === 'P' ? 'selected' : ''}>P</option>
+                <option value="M" ${uniform.size === 'M' ? 'selected' : ''}>M</option>
+                <option value="G" ${uniform.size === 'G' ? 'selected' : ''}>G</option>
+                <option value="GG" ${uniform.size === 'GG' ? 'selected' : ''}>GG</option>
+              </select>
+            </div>
+            <div class="flex items-end">
+              <button type="button" class="removeUniform bg-red-500 text-white px-3 py-2 rounded-lg ml-2" data-idx="${idx}">Remover</button>
+            </div>
+          </div>
+        `;
+        uniformsContainer.appendChild(uniformItem);
+      });
+
+      // Adiciona evento de remover uniforme
+      uniformsContainer.querySelectorAll('.removeUniform').forEach(btn => {
+        btn.addEventListener('click', function () {
+          const idx = parseInt(this.getAttribute('data-idx'));
+          uniforms.splice(idx, 1);
+          if (uniforms.length === 0) uniforms.push({ name: '', number: '', size: 'P' });
+          renderUniforms(uniforms);
+          saveFormData();
+        });
+      });
+    }
+
+    // Adicionar uniforme extra
+    addUniformBtn.addEventListener('click', () => {
+      // Pega os uniformes atuais
+      const uniforms = [];
+      uniformsContainer.querySelectorAll('.uniform-item').forEach(item => {
+        uniforms.push({
+          name: item.querySelector('input[name="uniformName[]"]').value,
+          number: item.querySelector('input[name="uniformNumber[]"]').value,
+          size: item.querySelector('select[name="uniformSize[]"]').value
+        });
+      });
+      uniforms.push({ name: '', number: '', size: 'P' });
+      renderUniforms(uniforms);
+      saveFormData();
+    });
+
+    // Salvar dados ao alterar qualquer campo
+    form.addEventListener('input', saveFormData);
+
+    // Envio do formulário
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const formData = new FormData(form);
+      const data = {
+        uniformName: [],
+        uniformNumber: [],
+        uniformSize: []
+      };
+
+      formData.forEach((value, key) => {
+        if (key === 'uniformName[]') data.uniformName.push(value);
+        else if (key === 'uniformNumber[]') data.uniformNumber.push(value);
+        else if (key === 'uniformSize[]') data.uniformSize.push(value);
+        else data[key] = value;
+      });
+
+      // Criar a mensagem para o WhatsApp
+      let message = `Pedido de Uniforme\n\nNome: ${data.clientName}\nEmail: ${data.clientEmail}\n\n`;
+      for (let i = 0; i < data.uniformName.length; i++) {
+        message += `${data.uniformName[i]} - ${data.uniformNumber[i]} - ${data.uniformSize[i]}\n`;
+      }
+
+      const phoneNumber = '553898077074';
+      const waLink = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+
+      saveFormData();
+
+      statusMessage.textContent = 'Pedido enviado com sucesso para o WhatsApp!';
+      statusMessage.classList.remove('hidden', 'text-red-500');
+      statusMessage.classList.add('text-green-500');
+
+      window.open(waLink, '_blank');
+
+      setTimeout(() => {
+        form.reset();
+        localStorage.removeItem('uniformOrder');
+        renderUniforms([{ name: '', number: '', size: 'P' }]);
+        statusMessage.classList.add('hidden');
+      }, 3000);
+    });		
+
+    // Restaurar dados ao carregar a página
+    window.addEventListener('DOMContentLoaded', restoreFormData);
+  </script>
+</body>
