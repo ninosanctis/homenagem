@@ -21,7 +21,12 @@ import "../styles/global.css";
         <input type="email" id="clientEmail" name="clientEmail" class="w-full p-2 sm:p-3 border border-gray-300 rounded-lg" required />
       </div>
 
-      <div id="uniformsContainer" class="overflow-x-auto">
+      <div>
+        <label for="orderNumber" class="block text-base sm:text-lg font-medium text-gray-700">Numero do Pedido</label>
+        <input type="text" id="orderNumber" name="orderNumber" class="w-full p-2 sm:p-3 border border-gray-300 rounded-lg" required />
+      </div>
+
+      <div id="uniformsContainer" class="overflow-x-auto background-white p-2 sm:p-4 rounded-lg shadow space-y-4 sm:space-y-6">
         <!-- Uniformes serão renderizados aqui -->
       </div>
 
@@ -49,16 +54,24 @@ import "../styles/global.css";
     const uniformsContainer = document.getElementById('uniformsContainer');
 
     function saveFormData() {
-      const formData = new FormData(form);
-      const data = {};
-      formData.forEach((value, key) => {
-        if (key.startsWith('uniform')) {
-          if (!data[key]) data[key] = [];
-          data[key].push(value);
-        } else {
-          data[key] = value;
-        }
+      const uniforms = [];
+      uniformsContainer.querySelectorAll('.uniform-item').forEach(item => {
+        uniforms.push({
+          name: item.querySelector('input[name="uniformName[]"]').value,
+          number: item.querySelector('input[name="uniformNumber[]"]').value,
+          size: item.querySelector('select[name="uniformSize[]"]').value
+        });
       });
+
+      const data = {
+        orderNumber: form.orderNumber.value,
+        clientName: form.clientName.value,
+        clientEmail: form.clientEmail.value,
+        uniformName: uniforms.map(u => u.name),
+        uniformNumber: uniforms.map(u => u.number),
+        uniformSize: uniforms.map(u => u.size)
+      };
+
       localStorage.setItem('uniformOrder', JSON.stringify(data));
     }
 
@@ -70,6 +83,7 @@ import "../styles/global.css";
       }
       const data = JSON.parse(saved);
 
+      if (data.orderNumber) form.orderNumber.value = data.orderNumber;
       if (data.clientName) form.clientName.value = data.clientName;
       if (data.clientEmail) form.clientEmail.value = data.clientEmail;
 
@@ -94,30 +108,31 @@ import "../styles/global.css";
         const uniformItem = document.createElement('div');
         uniformItem.classList.add('uniform-item');
         uniformItem.innerHTML = `
-
-  <div class="grid grid-cols-1 sm:grid-cols-4 gap-2 sm:gap-4 items-end mb-2 sm:mb-4">
-    <div>
-      <label class="block text-sm sm:text-base font-medium text-gray-700">Nome da Camisa</label>
-      <input type="text" name="uniformName[]" class="w-full p-2 sm:p-3 border border-gray-300 rounded-lg" required value="${uniform.name}" />
-    </div>
-    <div>
-      <label class="block text-sm sm:text-base font-medium text-gray-700">Número</label>
-      <input type="number" name="uniformNumber[]" class="w-full p-2 sm:p-3 border border-gray-300 rounded-lg" required value="${uniform.number}" />
-    </div>
-    <div>
-      <label class="block text-sm sm:text-base font-medium text-gray-700">Tamanho</label>
-      <select name="uniformSize[]" class="w-full p-2 sm:p-3 border border-gray-300 rounded-lg" required>
-        <option value="P" ${uniform.size === 'P' ? 'selected' : ''}>P</option>
-        <option value="M" ${uniform.size === 'M' ? 'selected' : ''}>M</option>
-        <option value="G" ${uniform.size === 'G' ? 'selected' : ''}>G</option>
-        <option value="GG" ${uniform.size === 'GG' ? 'selected' : ''}>GG</option>
-      </select>
-    </div>
-    <div class="flex items-end">
-      <button type="button" class="removeUniform bg-red-500 text-white px-3 py-2 rounded-lg ml-0 sm:ml-2 w-full sm:w-auto">Remover</button>
-    </div>
-  </div>
-`;
+      <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 sm:p-4 mb-3 shadow-sm">
+        <div class="grid grid-cols-2 sm:grid-cols-1 gap-2 sm:gap-4 items-end">
+          <div>
+            <label class="block text-sm sm:text-base font-medium text-gray-700">Nome da Camisa</label>
+            <input type="text" name="uniformName[]" class="w-full p-2 sm:p-3 border border-gray-300 rounded-lg" required value="${uniform.name}" />
+          </div>
+          <div>
+            <label class="block text-sm sm:text-base font-medium text-gray-700">Número</label>
+            <input type="number" name="uniformNumber[]" class="w-full p-2 sm:p-3 border border-gray-300 rounded-lg" required value="${uniform.number}" />
+          </div>
+          <div>
+            <label class="block text-sm sm:text-base font-medium text-gray-700">Tamanho</label>
+            <select name="uniformSize[]" class="w-full p-2 sm:p-3 border border-gray-300 rounded-lg" required>
+              <option value="P" ${uniform.size === 'P' ? 'selected' : ''}>P</option>
+              <option value="M" ${uniform.size === 'M' ? 'selected' : ''}>M</option>
+              <option value="G" ${uniform.size === 'G' ? 'selected' : ''}>G</option>
+              <option value="GG" ${uniform.size === 'GG' ? 'selected' : ''}>GG</option>
+            </select>
+          </div>
+          <div class="flex items-end">
+            <button type="button" class="removeUniform bg-red-500 text-white px-3 py-2 rounded-lg ml-0 sm:ml-2 w-full sm:w-auto">Remover</button>
+          </div>
+        </div>
+      </div>
+    `;
         uniformsContainer.appendChild(uniformItem);
       });
 
@@ -140,9 +155,9 @@ import "../styles/global.css";
           size: item.querySelector('select[name="uniformSize[]"]').value
         });
       });
-      uniforms.push({ name: '', number: '', size: 'P' });
+      uniforms.push({ name: '', number: '', size: 'P' }); // Adiciona um novo bloco vazio
       renderUniforms(uniforms);
-      saveFormData();
+      saveFormData(); // Salva os dados atualizados
     });
 
     form.addEventListener('input', saveFormData);
@@ -152,19 +167,24 @@ import "../styles/global.css";
 
       const formData = new FormData(form);
       const data = {
+        orderNumber: '',
+        clientName: '',
+        clientEmail: '',
         uniformName: [],
         uniformNumber: [],
         uniformSize: []
       };
 
       formData.forEach((value, key) => {
-        if (key === 'uniformName[]') data.uniformName.push(value);
+        if (key === 'orderNumber') data.orderNumber = value;
+        else if (key === 'clientName') data.clientName = value;
+        else if (key === 'clientEmail') data.clientEmail = value;
+        else if (key === 'uniformName[]') data.uniformName.push(value);
         else if (key === 'uniformNumber[]') data.uniformNumber.push(value);
         else if (key === 'uniformSize[]') data.uniformSize.push(value);
-        else data[key] = value;
       });
 
-      let message = `Pedido de Uniforme\n\nNome: ${data.clientName}\nEmail: ${data.clientEmail}\n\n`;
+      let message = `Pedido numero #${data.orderNumber}\n*${data.clientName}*\nEmail: ${data.clientEmail}\n------------------------------------------------\nLista\n`;
       for (let i = 0; i < data.uniformName.length; i++) {
         message += `${data.uniformName[i]} - ${data.uniformNumber[i]} - ${data.uniformSize[i]}\n`;
       }
