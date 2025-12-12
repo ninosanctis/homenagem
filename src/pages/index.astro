@@ -1,213 +1,93 @@
 ---
 import "../styles/global.css";
+import { SlArrowRight } from "react-icons/sl";
+import { SlArrowLeft } from "react-icons/sl";
 ---
-<body class="bg-gray-100 p-2 sm:p-4 min-h-screen">
+<body class="min-h-screen bg-gray-100 text-gray-900 flex flex-col items-center justify-center p-4 bg-gradient-to-r from-slate-900 to-slate-700">
+  <div class="padding-6 mb-8">
+    <h1 class="text-5xl font-bold text-white p-10">Obrigado por toda nossa historia!</h1>
+  </div>
 
-  <header class="w-full flex justify-center items-center py-4 mb-4 bg-white shadow-sm rounded-b-xl">
-    <img src="/logo.png" alt="Logo da Empresa" class="h-10 sm:h-12 w-auto max-w-xs object-contain" />
-  </header>
+  <!-- Carrossel de Imagens -->
+  <div class="relative w-full max-w-4xl mb-8">
+    <div id="carousel" class="flex items-center justify-center space-x-4 overflow-hidden">
+      <!-- Imagens serão inseridas via JavaScript -->
+    </div>
+    <button id="prevBtn" class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full shadow-lg hover:bg-gray-700"><SlArrowLeft /></button>
+    <button id="nextBtn" class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full shadow-lg hover:bg-gray-700"><SlArrowRight /></button>
+  </div>
 
-  <div class="max-w-4xl mx-auto bg-white p-2 sm:p-8 rounded-xl shadow-lg">
-    <h1 class="text-xl sm:text-3xl font-bold text-center text-gray-800 mb-4 sm:mb-8">Pedido de Uniformes</h1>
+  <!-- Temporizador -->
+  <div class="text-center mb-8">
+    <h2 class="text-2xl font-semibold mb-4 text-white">Nossa historia</h2>
+    <div id="timer" class="text-xl font-mono p-4 rounded-lg shadow-lg text-white bg-gray-800">
+      <!-- Timer será atualizado via JavaScript -->
+    </div>
+  </div>
 
-    <form id="orderForm" class="space-y-4 sm:space-y-6">
-      <div>
-        <label for="clientName" class="block text-base sm:text-lg font-medium text-gray-700">Nome Completo</label>
-        <input type="text" id="clientName" name="clientName" class="w-full p-2 sm:p-3 border border-gray-300 rounded-lg" required />
-      </div>
-
-      <div>
-        <label for="clientEmail" class="block text-base sm:text-lg font-medium text-gray-700">Email</label>
-        <input type="email" id="clientEmail" name="clientEmail" class="w-full p-2 sm:p-3 border border-gray-300 rounded-lg" required />
-      </div>
-
-      <div>
-        <label for="orderNumber" class="block text-base sm:text-lg font-medium text-gray-700">Numero do Pedido</label>
-        <input type="text" id="orderNumber" name="orderNumber" class="w-full p-2 sm:p-3 border border-gray-300 rounded-lg" required />
-      </div>
-
-      <div id="uniformsContainer" class="overflow-x-auto background-white p-2 sm:p-4 rounded-lg shadow space-y-4 sm:space-y-6">
-        <!-- Uniformes serão renderizados aqui -->
-      </div>
-
-      <div class="mt-2 sm:mt-4 text-center">
-        <button type="button" id="addUniform" class="bg-gray-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg shadow-md transition-all duration-200 transform hover:bg-gray-700 hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-gray-400">Adicionar Outra Camisa</button>
-      </div>
-
-      <div class="mt-4 sm:mt-8 text-center">
-        <button
-          type="submit"
-          class="bg-blue-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg transition-all duration-200 transform hover:bg-blue-700 hover:scale-105 active:scale-95 shadow focus:outline-none focus:ring-2 focus:ring-blue-400"
-        >
-          Enviar Pedido
-        </button>
-      </div>
-    </form>
-
-    <div id="statusMessage" class="mt-4 sm:mt-6 hidden text-center text-base sm:text-lg"></div>
+  <!-- Homenagem -->
+  <div class="max-w-2xl text-center bg-white p-6 rounded-lg shadow-lg">
+    <h2 class="text-2xl font-semibold mb-4">Te amarei até o fim</h2>
+    <p class="text-gray-700">
+      Aqui você pode escrever sua homenagem. Substitua este texto pelo conteúdo desejado.
+    </p>
   </div>
 
   <script>
-    const form = document.getElementById('orderForm');
-    const statusMessage = document.getElementById('statusMessage');
-    const addUniformBtn = document.getElementById('addUniform');
-    const uniformsContainer = document.getElementById('uniformsContainer');
+// Carrossel de Imagens
+const images = [
+  "/image1.jpg", // Substitua pelos caminhos das suas imagens
+  "/image2.jpg",
+  "/image3.jpg",
+  "/image4.jpg",
+  "/image5.jpg",
+]
+let currentIndex = 0
+const carousel = document.getElementById("carousel")
 
-    function saveFormData() {
-      const uniforms = [];
-      uniformsContainer.querySelectorAll('.uniform-item').forEach(item => {
-        uniforms.push({
-          name: item.querySelector('input[name="uniformName[]"]').value,
-          number: item.querySelector('input[name="uniformNumber[]"]').value,
-          size: item.querySelector('select[name="uniformSize[]"]').value
-        });
-      });
+function renderCarousel() {
+  carousel.innerHTML = ""
+  images.forEach((img, index) => {
+    const imgElement = document.createElement("img")
+    imgElement.src = img
+    imgElement.alt = `Imagem ${index + 1}`
+    imgElement.className = `w-32 h-32 sm:w-40 sm:h-40 object-cover rounded-full transition-opacity duration-300 ${
+      index === currentIndex ? "opacity-100 scale-110" : "opacity-50 scale-90"
+    }`
+    carousel.appendChild(imgElement)
+  })
+}
 
-      const data = {
-        orderNumber: form.orderNumber.value,
-        clientName: form.clientName.value,
-        clientEmail: form.clientEmail.value,
-        uniformName: uniforms.map(u => u.name),
-        uniformNumber: uniforms.map(u => u.number),
-        uniformSize: uniforms.map(u => u.size)
-      };
+document.getElementById("prevBtn").addEventListener("click", () => {
+  currentIndex = (currentIndex - 1 + images.length) % images.length
+  renderCarousel()
+})
 
-      localStorage.setItem('uniformOrder', JSON.stringify(data));
-    }
+document.getElementById("nextBtn").addEventListener("click", () => {
+  currentIndex = (currentIndex + 1) % images.length
+  renderCarousel()
+})
 
-    function restoreFormData() {
-      const saved = localStorage.getItem('uniformOrder');
-      if (!saved) {
-        renderUniforms([{ name: '', number: '', size: 'P' }]);
-        return;
-      }
-      const data = JSON.parse(saved);
+renderCarousel()
 
-      if (data.orderNumber) form.orderNumber.value = data.orderNumber;
-      if (data.clientName) form.clientName.value = data.clientName;
-      if (data.clientEmail) form.clientEmail.value = data.clientEmail;
+// Temporizador
+function updateTimer() {
+  const startDate = new Date("2021-09-06T00:00:00")
+  const now = new Date()
+  const diff = now - startDate
 
-      if (data.uniformName && Array.isArray(data.uniformName)) {
-        const uniforms = [];
-        for (let i = 0; i < data.uniformName.length; i++) {
-          uniforms.push({
-            name: data.uniformName[i] || '',
-            number: data.uniformNumber ? data.uniformNumber[i] : '',
-            size: data.uniformSize ? data.uniformSize[i] : 'P'
-          });
-        }
-        renderUniforms(uniforms);
-      } else {
-        renderUniforms([{ name: '', number: '', size: 'P' }]);
-      }
-    }
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24))
+  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
+  const seconds = Math.floor((diff % (1000 * 60)) / 1000)
 
-    function renderUniforms(uniforms) {
-      uniformsContainer.innerHTML = '';
-      uniforms.forEach((uniform, idx) => {
-        const uniformItem = document.createElement('div');
-        uniformItem.classList.add('uniform-item');
-        uniformItem.innerHTML = `
-      <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 sm:p-4 mb-3 shadow-sm">
-        <div class="grid grid-cols-2 sm:grid-cols-1 gap-2 sm:gap-4 items-end">
-          <div>
-            <label class="block text-sm sm:text-base font-medium text-gray-700">Nome da Camisa</label>
-            <input type="text" name="uniformName[]" class="w-full p-2 sm:p-3 border border-gray-300 rounded-lg" required value="${uniform.name}" />
-          </div>
-          <div>
-            <label class="block text-sm sm:text-base font-medium text-gray-700">Número</label>
-            <input type="number" name="uniformNumber[]" class="w-full p-2 sm:p-3 border border-gray-300 rounded-lg" required value="${uniform.number}" />
-          </div>
-          <div>
-            <label class="block text-sm sm:text-base font-medium text-gray-700">Tamanho</label>
-            <select name="uniformSize[]" class="w-full p-2 sm:p-3 border border-gray-300 rounded-lg" required>
-              <option value="P" ${uniform.size === 'P' ? 'selected' : ''}>P</option>
-              <option value="M" ${uniform.size === 'M' ? 'selected' : ''}>M</option>
-              <option value="G" ${uniform.size === 'G' ? 'selected' : ''}>G</option>
-              <option value="GG" ${uniform.size === 'GG' ? 'selected' : ''}>GG</option>
-            </select>
-          </div>
-          <div class="flex items-end">
-            <button type="button" class="removeUniform bg-red-500 text-white px-3 py-2 rounded-lg ml-0 sm:ml-2 w-full sm:w-auto">Remover</button>
-          </div>
-        </div>
-      </div>
-    `;
-        uniformsContainer.appendChild(uniformItem);
-      });
+  document.getElementById(
+    "timer"
+  ).textContent = `${days} dias, ${hours} horas, ${minutes} minutos, ${seconds} segundos`
+}
 
-      uniformsContainer.querySelectorAll('.removeUniform').forEach((btn, idx) => {
-        btn.addEventListener('click', function () {
-          uniforms.splice(idx, 1);
-          if (uniforms.length === 0) uniforms.push({ name: '', number: '', size: 'P' });
-          renderUniforms(uniforms);
-          saveFormData();
-        });
-      });
-    }
+updateTimer()
+setInterval(updateTimer, 1000)
 
-    addUniformBtn.addEventListener('click', () => {
-      const uniforms = [];
-      uniformsContainer.querySelectorAll('.uniform-item').forEach(item => {
-        uniforms.push({
-          name: item.querySelector('input[name="uniformName[]"]').value,
-          number: item.querySelector('input[name="uniformNumber[]"]').value,
-          size: item.querySelector('select[name="uniformSize[]"]').value
-        });
-      });
-      uniforms.push({ name: '', number: '', size: 'P' }); // Adiciona um novo bloco vazio
-      renderUniforms(uniforms);
-      saveFormData(); // Salva os dados atualizados
-    });
-
-    form.addEventListener('input', saveFormData);
-
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-
-      const formData = new FormData(form);
-      const data = {
-        orderNumber: '',
-        clientName: '',
-        clientEmail: '',
-        uniformName: [],
-        uniformNumber: [],
-        uniformSize: []
-      };
-
-      formData.forEach((value, key) => {
-        if (key === 'orderNumber') data.orderNumber = value;
-        else if (key === 'clientName') data.clientName = value;
-        else if (key === 'clientEmail') data.clientEmail = value;
-        else if (key === 'uniformName[]') data.uniformName.push(value);
-        else if (key === 'uniformNumber[]') data.uniformNumber.push(value);
-        else if (key === 'uniformSize[]') data.uniformSize.push(value);
-      });
-
-      let message = `Pedido numero #${data.orderNumber}\n*${data.clientName}*\nEmail: ${data.clientEmail}\n------------------------------------------------\nLista\n`;
-      for (let i = 0; i < data.uniformName.length; i++) {
-        message += `${data.uniformName[i]} - ${data.uniformNumber[i]} - ${data.uniformSize[i]}\n`;
-      }
-
-      const phoneNumber = '553898077074';
-      const waLink = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-
-      saveFormData();
-
-      statusMessage.textContent = 'Pedido enviado com sucesso para o WhatsApp!';
-      statusMessage.classList.remove('hidden', 'text-red-500');
-      statusMessage.classList.add('text-green-500');
-
-      window.open(waLink, '_blank');
-
-      setTimeout(() => {
-        form.reset();
-        localStorage.removeItem('uniformOrder');
-        renderUniforms([{ name: '', number: '', size: 'P' }]);
-        statusMessage.classList.add('hidden');
-      }, 3000);
-    });
-
-    window.addEventListener('DOMContentLoaded', restoreFormData);
   </script>
 </body>
