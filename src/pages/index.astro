@@ -8,83 +8,80 @@ import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
   <div class="w-full max-w-full sm:max-w-6xl p-4 sm:p-8 md:p-14">
 
     <!-- TÍTULO -->
-    <h1 class="text-2xl sm:text-4xl md:text-5xl font-bold text-center mb-8 sm:mb-16">
+    <h1 class="text-2xl sm:text-4xl md:text-5xl font-bold text-center mb-6 sm:mb-16">
       Obrigado por toda nossa história!
     </h1>
 
-    <!-- CARROSSEL -->
-    <div class="relative w-full flex items-center justify-center mb-8 sm:mb-20
-                overflow-hidden bg-white/10 backdrop-blur-md
-                border border-white/20 rounded-lg p-2 sm:p-4">
+    <!-- CARROSSEL (MÁSCARA) -->
+    <div
+      class="relative w-full mb-10 sm:mb-20
+             bg-white/10 backdrop-blur-md
+             border border-white/20 rounded-lg
+             px-4 py-10 sm:px-6 sm:py-6
+             overflow-hidden"
+    >
 
       <!-- BOTÃO ESQUERDA -->
       <button id="prev"
-        class="absolute left-2 sm:left-4 z-20 bg-gray-900/80 hover:bg-gray-700
+        class="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 z-20
+               bg-gray-900/80 hover:bg-gray-700
                p-2 sm:p-3 rounded-full">
         <SlArrowLeft size={18} />
+      </button>
+
+      <!-- BOTÃO DIREITA -->
+      <button id="next"
+        class="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 z-20
+               bg-gray-900/80 hover:bg-gray-700
+               p-2 sm:p-3 rounded-full">
+        <SlArrowRight size={18} />
       </button>
 
       <!-- TRACK -->
       <div
         id="carouselTrack"
-        class="flex items-center justify-center gap-4 sm:gap-8
-               w-full p-4 sm:p-8 md:p-20 overflow-hidden touch-pan-y"
+        class="flex items-center justify-center
+               gap-6 sm:gap-8
+               touch-pan-y"
       >
 
         <!-- CARD -->
-        <div class="carousel-card
-            w-56 aspect-[9/16]
-            sm:w-44
-            rounded-xl bg-black/20
-            overflow-hidden flex items-center justify-center
-            transition-all duration-500 ease-in-out">
+        <div class="carousel-card w-64 h-[28rem] sm:w-44 sm:h-64
+                    rounded-xl bg-black/20
+                    overflow-hidden flex items-center justify-center
+                    transition-all duration-500 ease-in-out">
           <img src="/foto4.png" class="w-full h-full object-cover" />
         </div>
 
-        <div class="carousel-card
-            w-56 aspect-[9/16]
-            sm:w-44
-            rounded-xl bg-black/20
-            overflow-hidden flex items-center justify-center
-            transition-all duration-500 ease-in-out">
+        <div class="carousel-card w-64 h-[28rem] sm:w-44 sm:h-64
+                    rounded-xl bg-black/20
+                    overflow-hidden flex items-center justify-center
+                    transition-all duration-500 ease-in-out">
           <img src="/foto2.png" class="w-full h-full object-cover" />
         </div>
 
-        <div class="carousel-card
-            w-56 aspect-[9/16]
-            sm:w-44
-            rounded-xl bg-black/20
-            overflow-hidden flex items-center justify-center
-            transition-all duration-500 ease-in-out">
+        <div class="carousel-card w-64 h-[28rem] sm:w-44 sm:h-64
+                    rounded-xl bg-black/20
+                    overflow-hidden flex items-center justify-center
+                    transition-all duration-500 ease-in-out">
           <img src="/foto3.png" class="w-full h-full object-cover" />
         </div>
 
-        <div class="carousel-card
-            w-56 aspect-[9/16]
-            sm:w-44
-            rounded-xl bg-black/20
-            overflow-hidden flex items-center justify-center
-            transition-all duration-500 ease-in-out">
+        <div class="carousel-card w-64 h-[28rem] sm:w-44 sm:h-64
+                    rounded-xl bg-black/20
+                    overflow-hidden flex items-center justify-center
+                    transition-all duration-500 ease-in-out">
           <img src="/foto4.png" class="w-full h-full object-cover" />
         </div>
 
-        <div class="carousel-card
-            w-56 aspect-[9/16]
-            sm:w-44
-            rounded-xl bg-black/20
-            overflow-hidden flex items-center justify-center
-            transition-all duration-500 ease-in-out">
+        <div class="carousel-card w-64 h-[28rem] sm:w-44 sm:h-64
+                    rounded-xl bg-black/20
+                    overflow-hidden flex items-center justify-center
+                    transition-all duration-500 ease-in-out">
           <img src="/foto2.png" class="w-full h-full object-cover" />
         </div>
 
       </div>
-
-      <!-- BOTÃO DIREITA -->
-      <button id="next"
-        class="absolute right-2 sm:right-4 z-20 bg-gray-900/80 hover:bg-gray-700
-               p-2 sm:p-3 rounded-full">
-        <SlArrowRight size={18} />
-      </button>
     </div>
 
     <!-- TIMER -->
@@ -92,14 +89,16 @@ import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
       <h2 class="text-2xl font-semibold mb-4">Nossa história</h2>
       <div
         id="timer"
-        class="inline-block text-sm sm:text-lg font-mono px-4 sm:px-6
-               py-3 sm:py-4 rounded-lg bg-gray-800 shadow-lg"
+        class="inline-block text-sm sm:text-lg font-mono
+               px-4 sm:px-6 py-3 sm:py-4
+               rounded-lg bg-gray-800 shadow-lg"
       ></div>
     </div>
 
     <!-- HOMENAGEM -->
-    <div class="max-w-2xl mx-auto text-center bg-white text-gray-800
-                p-4 sm:p-8 rounded-xl shadow-lg">
+    <div class="max-w-2xl mx-auto text-center
+                bg-white text-gray-800
+                p-6 sm:p-8 rounded-xl shadow-lg">
       <h2 class="text-xl sm:text-2xl font-semibold mb-4">Te amarei até o fim</h2>
       <p class="text-sm sm:text-base">
         Aqui você pode escrever sua homenagem. Substitua este texto pelo conteúdo desejado.
@@ -120,18 +119,24 @@ import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
       const centerIndex = Math.floor(cards.length / 2);
 
       cards.forEach((card, index) => {
+        // RESET TOTAL
         card.classList.remove(
-          "scale-125", "opacity-100", "z-20",
-          "scale-90", "opacity-60", "blur-sm",
-          "scale-75", "opacity-30", "blur-md"
+          "scale-110",
+          "scale-100",
+          "opacity-100",
+          "opacity-60",
+          "opacity-30",
+          "blur-sm",
+          "blur-md",
+          "z-20"
         );
 
         if (index === centerIndex) {
-          card.classList.add("scale-125", "opacity-100", "z-20");
+          card.classList.add("scale-110", "opacity-100", "z-20");
         } else if (index === centerIndex - 1 || index === centerIndex + 1) {
-          card.classList.add("scale-90", "opacity-60", "blur-sm");
+          card.classList.add("scale-100", "opacity-60", "blur-sm");
         } else {
-          card.classList.add("scale-75", "opacity-30", "blur-md");
+          card.classList.add("scale-95", "opacity-30", "blur-md");
         }
       });
     }
@@ -151,21 +156,16 @@ import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
     document.getElementById("next").addEventListener("click", nextSlide);
     document.getElementById("prev").addEventListener("click", prevSlide);
 
-    // SWIPE SIMPLES (MOBILE)
-    track.addEventListener("touchstart", (e) => {
+    // SWIPE SIMPLES
+    track.addEventListener("touchstart", e => {
       startX = e.touches[0].clientX;
       isSwiping = true;
     }, { passive: true });
 
-    track.addEventListener("touchend", (e) => {
+    track.addEventListener("touchend", e => {
       if (!isSwiping) return;
-      const endX = e.changedTouches[0].clientX;
-      const diff = endX - startX;
-
-      if (Math.abs(diff) > 50) {
-        diff < 0 ? nextSlide() : prevSlide();
-      }
-
+      const diff = e.changedTouches[0].clientX - startX;
+      if (Math.abs(diff) > 50) diff < 0 ? nextSlide() : prevSlide();
       isSwiping = false;
     });
 
