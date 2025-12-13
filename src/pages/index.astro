@@ -8,81 +8,84 @@ import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
   <div class="w-full max-w-full sm:max-w-6xl p-4 sm:p-8 md:p-14">
 
     <!-- TÍTULO -->
-    <h1 class="text-2xl sm:text-4xl md:text-5xl font-bold text-center mb-6 sm:mb-16">
+    <h1 class="text-2xl sm:text-4xl md:text-5xl font-bold text-center mb-8 sm:mb-16">
       Obrigado por toda nossa história!
     </h1>
 
-    <!-- CARROSSEL (MÁSCARA) -->
-    <div
-      class="relative w-full mb-10 sm:mb-20
-             bg-white/10 backdrop-blur-md
-             border border-white/20 rounded-lg
-             px-4 py-10 sm:px-6 sm:py-6
-             overflow-hidden"
-    >
+    <!-- ================= CARROSSEL ================= -->
+    <div class="w-full max-w-4xl mx-auto mb-12">
 
-      <!-- BOTÃO ESQUERDA -->
-      <button id="prev"
-        class="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 z-20
-               bg-gray-900/80 hover:bg-gray-700
-               p-2 sm:p-3 rounded-full">
-        <SlArrowLeft size={18} />
-      </button>
-
-      <!-- BOTÃO DIREITA -->
-      <button id="next"
-        class="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 z-20
-               bg-gray-900/80 hover:bg-gray-700
-               p-2 sm:p-3 rounded-full">
-        <SlArrowRight size={18} />
-      </button>
-
-      <!-- TRACK -->
       <div
-        id="carouselTrack"
-        class="flex items-center justify-center
-               gap-6 sm:gap-8
-               touch-pan-y"
+        class="relative overflow-hidden rounded-xl
+               bg-white/10 backdrop-blur-md
+               border border-white/20
+               h-[320px] sm:h-[420px]"
       >
 
-        <!-- CARD -->
-        <div class="carousel-card w-64 h-[28rem] sm:w-44 sm:h-64
-                    rounded-xl bg-black/20
-                    overflow-hidden flex items-center justify-center
-                    transition-all duration-500 ease-in-out">
-          <img src="/foto4.png" class="w-full h-full object-cover" />
+        <!-- TRACK -->
+        <div
+          id="carouselTrack"
+          class="flex h-full transition-transform duration-500 ease-in-out"
+        >
+
+          <!-- CLONE ÚLTIMA -->
+          <div class="w-full flex-shrink-0 flex items-center justify-center">
+            <img src="/foto5.png" class="max-h-full max-w-full object-contain" />
+          </div>
+
+          <!-- SLIDES REAIS -->
+          <div class="w-full flex-shrink-0 flex items-center justify-center">
+            <img src="/foto4.png" class="max-h-full max-w-full object-contain" />
+          </div>
+
+          <div class="w-full flex-shrink-0 flex items-center justify-center">
+            <img src="/foto2.png" class="max-h-full max-w-full object-contain" />
+          </div>
+
+          <div class="w-full flex-shrink-0 flex items-center justify-center">
+            <img src="/foto3.png" class="max-h-full max-w-full object-contain" />
+          </div>
+
+          <div class="w-full flex-shrink-0 flex items-center justify-center">
+            <img src="/foto4.png" class="max-h-full max-w-full object-contain" />
+          </div>
+
+          <div class="w-full flex-shrink-0 flex items-center justify-center">
+            <img src="/foto2.png" class="max-h-full max-w-full object-contain" />
+          </div>
+
+          <!-- CLONE PRIMEIRA -->
+          <div class="w-full flex-shrink-0 flex items-center justify-center">
+            <img src="/foto1.png" class="max-h-full max-w-full object-contain" />
+          </div>
+
         </div>
 
-        <div class="carousel-card w-64 h-[28rem] sm:w-44 sm:h-64
-                    rounded-xl bg-black/20
-                    overflow-hidden flex items-center justify-center
-                    transition-all duration-500 ease-in-out">
-          <img src="/foto2.png" class="w-full h-full object-cover" />
-        </div>
+        <!-- BOTÃO ESQUERDA -->
+        <button
+          id="prev"
+          class="absolute left-3 top-1/2 -translate-y-1/2
+                 bg-gray-900/70 hover:bg-gray-900
+                 p-2 sm:p-3 rounded-full text-white"
+        >
+          <SlArrowLeft size={18} />
+        </button>
 
-        <div class="carousel-card w-64 h-[28rem] sm:w-44 sm:h-64
-                    rounded-xl bg-black/20
-                    overflow-hidden flex items-center justify-center
-                    transition-all duration-500 ease-in-out">
-          <img src="/foto3.png" class="w-full h-full object-cover" />
-        </div>
-
-        <div class="carousel-card w-64 h-[28rem] sm:w-44 sm:h-64
-                    rounded-xl bg-black/20
-                    overflow-hidden flex items-center justify-center
-                    transition-all duration-500 ease-in-out">
-          <img src="/foto4.png" class="w-full h-full object-cover" />
-        </div>
-
-        <div class="carousel-card w-64 h-[28rem] sm:w-44 sm:h-64
-                    rounded-xl bg-black/20
-                    overflow-hidden flex items-center justify-center
-                    transition-all duration-500 ease-in-out">
-          <img src="/foto2.png" class="w-full h-full object-cover" />
-        </div>
-
+        <!-- BOTÃO DIREITA -->
+        <button
+          id="next"
+          class="absolute right-3 top-1/2 -translate-y-1/2
+                 bg-gray-900/70 hover:bg-gray-900
+                 p-2 sm:p-3 rounded-full text-white"
+        >
+          <SlArrowRight size={18} />
+        </button>
       </div>
+
+      <!-- DOTS -->
+      <div id="dots" class="flex justify-center gap-2 mt-4"></div>
     </div>
+    <!-- ================= FIM CARROSSEL ================= -->
 
     <!-- TIMER -->
     <div class="text-center mb-16">
@@ -91,89 +94,107 @@ import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
         id="timer"
         class="inline-block text-sm sm:text-lg font-mono
                px-4 sm:px-6 py-3 sm:py-4
-               rounded-lg bg-gray-800 shadow-lg"
-      ></div>
+               rounded-lg bg-gray-800 shadow-lg">
+      </div>
     </div>
 
     <!-- HOMENAGEM -->
     <div class="max-w-2xl mx-auto text-center
                 bg-white text-gray-800
-                p-6 sm:p-8 rounded-xl shadow-lg">
+                p-4 sm:p-8 rounded-xl shadow-lg">
       <h2 class="text-xl sm:text-2xl font-semibold mb-4">Te amarei até o fim</h2>
       <p class="text-sm sm:text-base">
-        Aqui você pode escrever sua homenagem. Substitua este texto pelo conteúdo desejado.
+        Aqui você pode escrever sua homenagem.
       </p>
     </div>
 
   </div>
 
-  <!-- JS -->
+  <!-- ================= JS ================= -->
   <script>
+    // ---------- CARROSSEL INFINITO ----------
     const track = document.getElementById("carouselTrack");
-    let cards = Array.from(track.children);
+    const slides = Array.from(track.children);
+    const dotsContainer = document.getElementById("dots");
 
+    const totalSlides = slides.length;
+    const realSlides = totalSlides - 2;
+
+    let index = 1; // começa no primeiro slide real
     let startX = 0;
-    let isSwiping = false;
 
-    function updateCarousel() {
-      const centerIndex = Math.floor(cards.length / 2);
+    track.style.transform = `translateX(-${index * 100}%)`;
 
-      cards.forEach((card, index) => {
-        // RESET TOTAL
-        card.classList.remove(
-          "scale-110",
-          "scale-100",
-          "opacity-100",
-          "opacity-60",
-          "opacity-30",
-          "blur-sm",
-          "blur-md",
-          "z-20"
-        );
+    // Criar dots (somente slides reais)
+    for (let i = 0; i < realSlides; i++) {
+      const dot = document.createElement("button");
+      dot.className = "w-2.5 h-2.5 rounded-full bg-gray-400 transition-colors";
+      dot.addEventListener("click", () => {
+        index = i + 1;
+        updateCarousel();
+      });
+      dotsContainer.appendChild(dot);
+    }
 
-        if (index === centerIndex) {
-          card.classList.add("scale-110", "opacity-100", "z-20");
-        } else if (index === centerIndex - 1 || index === centerIndex + 1) {
-          card.classList.add("scale-100", "opacity-60", "blur-sm");
-        } else {
-          card.classList.add("scale-95", "opacity-30", "blur-md");
-        }
+    const dots = Array.from(dotsContainer.children);
+
+    function updateDots() {
+      const realIndex = (index - 1 + realSlides) % realSlides;
+      dots.forEach((dot, i) => {
+        dot.classList.toggle("bg-white", i === realIndex);
+        dot.classList.toggle("bg-gray-400", i !== realIndex);
       });
     }
 
+    function updateCarousel(animate = true) {
+      track.style.transition = animate
+        ? "transform 0.5s ease-in-out"
+        : "none";
+
+      track.style.transform = `translateX(-${index * 100}%)`;
+      updateDots();
+    }
+
     function nextSlide() {
-      track.appendChild(cards.shift());
-      cards = Array.from(track.children);
+      index++;
       updateCarousel();
     }
 
     function prevSlide() {
-      track.prepend(cards.pop());
-      cards = Array.from(track.children);
+      index--;
       updateCarousel();
     }
+
+    track.addEventListener("transitionend", () => {
+      if (index === totalSlides - 1) {
+        index = 1;
+        updateCarousel(false);
+      }
+
+      if (index === 0) {
+        index = totalSlides - 2;
+        updateCarousel(false);
+      }
+    });
 
     document.getElementById("next").addEventListener("click", nextSlide);
     document.getElementById("prev").addEventListener("click", prevSlide);
 
-    // SWIPE SIMPLES
+    // Swipe mobile
     track.addEventListener("touchstart", e => {
       startX = e.touches[0].clientX;
-      isSwiping = true;
     }, { passive: true });
 
     track.addEventListener("touchend", e => {
-      if (!isSwiping) return;
       const diff = e.changedTouches[0].clientX - startX;
       if (Math.abs(diff) > 50) diff < 0 ? nextSlide() : prevSlide();
-      isSwiping = false;
     });
 
-    updateCarousel();
+    updateDots();
 
-    // TIMER
+    // ---------- TIMER ----------
     function updateTimer() {
-      const startDate = new Date("2021-09-06T00:00:00");
+      const startDate = new Date("2021-11-06T00:00:00");
       const now = new Date();
       const diff = now - startDate;
 
